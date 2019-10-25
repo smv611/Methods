@@ -1,0 +1,15 @@
+            OpenFileDialog _dialog = new OpenFileDialog();
+            _dialog.InitialDirectory = "C:\\Users\\Михаил\\Pictures";
+            _dialog.Filter = " Image |*.png; *.jpeg; *.jpg; |All Files|*.*;";
+            if (_dialog.ShowDialog() == true)
+            {
+                Stream _stream = _dialog.OpenFile();
+                 byte[] _image = new byte[_stream.Length];
+                _stream.Read(_image, 0, _image.Length);
+                _empListItem.Фото = _image;
+                _stream.Close();
+                _empListItem.TimeChange = DateTime.Now;
+                _contextDb.SaveChanges();
+                RaisePropertyChanged("EmpListItem");
+                RaisePropertyChanged("EmpList");
+            }

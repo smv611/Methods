@@ -1,0 +1,3 @@
+ FileStream fs = stream as FileStream;
+                string fileName = fs.Name;
+string fileName = Path.GetFileName(fs.Name);

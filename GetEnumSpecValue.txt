@@ -1,0 +1,4 @@
+
+ return Enum.GetValues(typeof(CorpusEnum)).Cast<CorpusEnum>().Select(x => x.ToString()).ToList();
+            
+return Enum.GetValues(typeof(EtazhEnum)).Cast<EtazhEnum>().Select(x => (int)x).ToList();

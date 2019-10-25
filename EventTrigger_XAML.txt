@@ -1,0 +1,13 @@
+            xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"               			
+            xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
+
+                
+
+
+		<Image   Margin="5" Source="{Binding SelectedLocProp.Foto}"  >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <Custom:EventToCommand Command="{Binding ShowFoto}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>

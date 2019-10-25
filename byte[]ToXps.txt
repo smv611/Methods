@@ -1,0 +1,22 @@
+http://geekswithblogs.net/shahed/archive/2007/09/22/115540.aspx
+
+        private void MyButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog _dialog = new OpenFileDialog();
+            _dialog.InitialDirectory = @"C:\temp\";
+            _dialog.Filter = "XPS |*.xps; |All Files|*.*;";
+            if (_dialog.ShowDialog() == true)
+            {
+                Stream _stream = _dialog.OpenFile();
+                byte[] _image = new byte[_stream.Length];
+                _stream.Read(_image, 0, _image.Length);
+                MemoryStream xpsStream = new MemoryStream(_image);
+                Package _package = Package.Open(xpsStream);
+                string _packageUriString = "http://www.contoso.com/";
+                Uri _packageUri = new Uri(_packageUriString);
+                PackageStore.AddPackage(_packageUri, _package);
+                XpsDocument _doc = new XpsDocument(_package, CompressionOption.Normal, _packageUriString);
+                MyDocViewer.Document = _doc.GetFixedDocumentSequence();
+                _stream.Close();
+            }
+        }

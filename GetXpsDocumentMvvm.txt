@@ -1,0 +1,62 @@
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
+using System.IO;
+using System.IO.Packaging;
+using System.Windows.Xps.Packaging;
+using System.Windows.Documents;
+
+namespace WpfAppXps
+{
+    public class MainWindowViewModel:ViewModelBase
+    {
+        public MainWindowViewModel()
+        {
+            GetXpsDocCmd = new RelayCommand(GetXpsDocExecute);
+        }
+
+        private FixedDocumentSequence _xpsDocumentProp;
+        public FixedDocumentSequence XpsDocumentProp
+        {
+            get { return _xpsDocumentProp; }
+            set { _xpsDocumentProp = value;
+                RaisePropertyChanged("XpsDocumentProp");
+            }
+        }
+
+
+        public RelayCommand GetXpsDocCmd { get; set; }
+        void GetXpsDocExecute() {
+            OpenFileDialog _dialog = new OpenFileDialog();
+            _dialog.InitialDirectory = @"C:\temp\";
+            _dialog.Filter = "XPS |*.xps; |All Files|*.*;";
+            if (_dialog.ShowDialog() == true)
+            {
+                Stream _stream = _dialog.OpenFile();
+                byte[] _image = new byte[_stream.Length];
+                _stream.Read(_image, 0, _image.Length);
+                MemoryStream xpsStream = new MemoryStream(_image);
+                Package _package = Package.Open(xpsStream);
+                string _packageUriString = "http://www.contoso.com/";
+                Uri _packageUri = new Uri(_packageUriString);
+                PackageStore.AddPackage(_packageUri, _package);
+                XpsDocument _doc = new XpsDocument(_package, CompressionOption.Normal, _packageUriString);
+                XpsDocumentProp = _doc.GetFixedDocumentSequence();
+                _stream.Close();
+            }
+        }
+    }
+}
+
+
+//XAML
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <DocumentViewer Margin="10" x:Name="MyDocViewer" Grid.Column="0" Document="{Binding XpsDocumentProp, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel Grid.Column="1">
+            <Button Margin="15,5" x:Name="MyButton"  Content="Get Document" Padding="15,0" Command="{Binding GetXpsDocCmd}"/>
+        </StackPanel>
+    </Grid>

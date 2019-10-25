@@ -1,0 +1,10 @@
+https://msdn.microsoft.com/ru-ru/library/d62kzs03%28v=vs.110%29.aspx
+
+FileStream fs = new FileStream(Path.GetTempPath() + "name.jpg", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+fs.Write(PhotosBytes, 0, PhotosBytes.Length);
+
+Process.Start(Path.GetTempPath() + "name.jpg");
+
+
+Path.GetTempPath()
+https://msdn.microsoft.com/ru-ru/library/system.io.path.gettemppath%28v=vs.110%29.aspx

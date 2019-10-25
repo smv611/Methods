@@ -1,0 +1,8 @@
+                Stream _stream = _dialog.OpenFile();
+                byte[] _image = new byte[_stream.Length];
+                _stream.Read(_image, 0, _image.Length);
+                FileStream fs = _stream as FileStream;
+                fs = new FileStream(@"D:\temp\123.jpg", FileMode.Create, FileAccess.Write);
+                fs.Write(_image, 0, _image.Length);
+                _stream.Close();
+                _contextDb.SaveChanges();

@@ -1,0 +1,37 @@
+http://stackoverflow.com/questions/26916575/viewing-word-documents-in-wpf
+
+using System.IO;
+using Microsoft.Office.Interop.Word;
+using Microsoft.Win32;
+using WordWindow = Microsoft.Office.Interop.Word.Window;
+using Window = System.Windows.Window;
+
+private void BrowseButton_Click(object sender, RoutedEventArgs e)
+{
+    // Create OpenFileDialog
+    Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+    // Set filter for file extension and default file extension
+    dlg.DefaultExt = ".doc";
+    dlg.Filter = "Word documents (.doc)|*.doc";
+
+    // Display OpenFileDialog by calling ShowDialog method
+    Nullable<bool> result = dlg.ShowDialog();
+
+    // Get the selected file name and display in a TextBox
+    if (result == true)
+    {
+        if (dlg.FileName.Length > 0)
+        {
+            SelectedFileTextBox.Text = dlg.FileName;
+            string newXPSDocumentName =
+    String.Concat(System.IO.Path.GetDirectoryName(dlg.FileName), "\\",
+                            System.IO.Path.GetFileNameWithoutExtension(dlg.FileName), ".xps");
+
+            // Set DocumentViewer.Document to XPS document
+            documentViewer1.Document =
+                ConvertWordDocToXPSDoc(dlg.FileName, 
+    newXPSDocumentName).GetFixedDocumentSequence();
+        }
+    }
+}
