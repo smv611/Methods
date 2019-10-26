@@ -1,0 +1,10 @@
+        public ActionResult Index(int? page)
+        {
+            var qData = (from q in db.IdentetyTests select q).OrderBy(s=>s.Name).Skip(0);
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+
+            return View(qData.ToPagedList(pageNumber, pageSize));
+
+        }

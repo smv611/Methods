@@ -1,0 +1,27 @@
+    public class SimpleDatasViewModel
+    {
+        public int id { get; set; }
+        public string Name { get; set; }
+        public string Age { get; set; }
+        [DisplayFormat(DataFormatString = "{0:+#(###)###-##-##}")]
+        public long? MobilePhone { get; set; }
+        public byte[] Image { get; set; }
+
+
+
+        public static SimpleDatasViewModel GetViewModelDatas(SimpleData _model) {
+
+            SimpleDatasViewModel _viewModel = new SimpleDatasViewModel();
+            _viewModel.id = _model.id;
+            _viewModel.Name = _model.Name;
+            _viewModel.Age = _model.Age;
+
+            _viewModel.MobilePhone = _model.MobilePhone != null ? _viewModel.MobilePhone = long.Parse(_model.MobilePhone) : _viewModel.MobilePhone = null;
+
+            _viewModel.Image = _model.Image;
+
+            return _viewModel;
+        }
+
+
+    }

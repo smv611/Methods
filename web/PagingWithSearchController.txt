@@ -1,0 +1,12 @@
+        public ActionResult Index(string searchString, int? page)
+        {
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            var qData = (from q in db.MyNotes select q).OrderBy(s=>s.id).Skip(0);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                qData = qData.Where(s => s.Language.Contains(searchString) || s.FileName.Contains(searchString) || s.Description.Contains(searchString));
+            }
+            return View(qData.ToPagedList(pageNumber, pageSize));
+        }

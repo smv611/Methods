@@ -1,0 +1,14 @@
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        @Html.TextBox("searchString") 
+        <input type="submit" value="Search" />
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+    </p>
+    }

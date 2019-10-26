@@ -1,0 +1,196 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using WebAppGetEnumValue_2.Models;
+using WebAppGetEnumValue_2.ViewModel;
+using WebAppGetEnumValue_2.Resources;
+
+namespace WebAppGetEnumValue_2.Controllers
+{
+    public class EnumTestsController : Controller
+    {
+        private TestDBEntities db = new TestDBEntities();
+
+        // GET: EnumTests
+        public ActionResult Index()
+        {
+            var _listFromDb = db.EnumTests.ToList();
+            var _viewModel = new List<MyViewModel>();
+            foreach (var item in _listFromDb)
+            {
+                _viewModel.Add(MyViewModel.GetViewModel(item));
+            }
+            return View(_viewModel);
+        }
+
+        // GET: EnumTests/Details/5
+        public ActionResult Details(int? id)
+        {
+            EnumTest enumTest = db.EnumTests.Find(id);
+            MyViewModel _viewModel = new MyViewModel();
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            if (enumTest == null)
+            {
+                return HttpNotFound();
+            }
+
+            _viewModel.id = enumTest.id;
+            _viewModel.Name = enumTest.Name;
+            _viewModel.Пол = enumTest.Gender != null ? (Пол)Enum.Parse(typeof(Пол), enumTest.Gender) : Пол.unknown;
+            _viewModel.Этаж = enumTest.Floor != null ? (Этаж)Enum.Parse(typeof(Этаж), enumTest.Floor) : Этаж.unknown;
+            _viewModel.Отдел = enumTest.NameOfProduct != null ? (Отдел)Enum.Parse(typeof(Отдел), enumTest.NameOfProduct) : Отдел.unknown;
+
+            return View(_viewModel);
+        }
+
+        // GET: EnumTests/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: EnumTests/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(MyViewModel viewmodel)
+        {
+            if (ModelState.IsValid)
+            {
+                EnumTest enumTest = new EnumTest();
+                if (string.IsNullOrEmpty(viewmodel.Name))
+                {
+                    enumTest.Name = "";
+                }
+                else
+                {
+                    enumTest.Name = viewmodel.Name.ToString();
+                }
+                if (viewmodel.Пол== 0)
+                {
+                    enumTest.Gender = null;
+                }
+                else
+                {
+                    enumTest.Gender = viewmodel.Пол.ToString();
+                }
+                if (viewmodel.Этаж == 0)
+                {
+                    enumTest.Floor = null;
+                }
+                else
+                {
+                    enumTest.Floor = viewmodel.Этаж.ToString();
+                }
+                if (viewmodel.Отдел == 0)
+                {
+                    enumTest.NameOfProduct = null;
+                }
+                else
+                {
+                    enumTest.NameOfProduct = viewmodel.Отдел.ToString();
+                }
+
+                db.EnumTests.Add(enumTest);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(viewmodel);
+        }
+
+        // GET: EnumTests/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            EnumTest enumTest = db.EnumTests.Find(id);
+            MyViewModel _viewModel = MyViewModel.GetViewModel(enumTest);            
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (enumTest == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(_viewModel);
+        }
+
+        // POST: EnumTests/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(MyViewModel _viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                EnumTest eTest = new EnumTest();
+                eTest.id = _viewModel.id;
+                eTest.Name = _viewModel.Name;
+                eTest.Floor = _viewModel.Этаж.ToString();
+                eTest.Gender = _viewModel.Пол.ToString();
+                eTest.NameOfProduct = _viewModel.Отдел.ToString();
+                db.Entry(eTest).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(_viewModel);
+        }
+
+        // GET: EnumTests/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            EnumTest enumTest = db.EnumTests.Find(id);
+            MyViewModel _viewModel = new MyViewModel();
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (enumTest == null)
+            {
+                return HttpNotFound();
+            }
+            _viewModel.id = enumTest.id;
+            _viewModel.Name = enumTest.Name;
+            _viewModel.Пол = enumTest.Gender != null ? (Пол)Enum.Parse(typeof(Пол), enumTest.Gender) : Пол.unknown;
+            _viewModel.Этаж = enumTest.Floor != null ? (Этаж)Enum.Parse(typeof(Этаж), enumTest.Floor) : Этаж.unknown;
+            _viewModel.Отдел = enumTest.NameOfProduct != null ? (Отдел)Enum.Parse(typeof(Отдел), enumTest.NameOfProduct) : Отдел.unknown;
+
+            return View(_viewModel);
+        }
+
+        // POST: EnumTests/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            EnumTest enumTest = db.EnumTests.Find(id);
+            db.EnumTests.Remove(enumTest);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

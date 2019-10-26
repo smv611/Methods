@@ -1,0 +1,7 @@
+        public FileContentResult GetFile(int? id)
+        {
+            byte[] _contentFile = db.MyNote_2.Find(id).BinaryFileData;
+            string _contentType = "application/octet-stream";
+            string _downloadFileName = db.MyNote_2.Find(id).FileName;
+            return File(_contentFile, _contentType, _downloadFileName);
+        }

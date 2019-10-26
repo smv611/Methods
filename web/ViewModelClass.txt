@@ -1,0 +1,18 @@
+    public partial class EnumTestVM
+    {
+        public int id { get; set; }
+        public string Name { get; set; }
+        public Gender Gender { get; set; }
+        public Floor Floor { get; set; }
+        public NameOfProduct NameOfProduct { get; set; }
+
+        public static EnumTestVM CreateVM(EnumTest enumTest) {
+            EnumTestVM vm = new EnumTestVM();
+            vm.id = enumTest.id;
+            vm.Name = enumTest.Name;
+            vm.Floor = enumTest.Floor != null ? (Floor)Enum.Parse(typeof(Floor), enumTest.Floor) : Floor.NotSet;
+            vm.Gender = enumTest.Gender != null ? (Gender)Enum.Parse(typeof(Gender), enumTest.Gender) : Gender.NotSet;
+            vm.NameOfProduct = enumTest.NameOfProduct != null ? (NameOfProduct)Enum.Parse(typeof(NameOfProduct), enumTest.NameOfProduct) : NameOfProduct.NotSet;
+            return vm;
+        }
+    }

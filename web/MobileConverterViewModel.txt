@@ -1,0 +1,14 @@
+
+[DisplayFormat(DataFormatString = "{0:+#(###)###-##-##}")]
+public long? MobilePhone { get; set; }
+
+
+
+public static StaffsVM GetViewModelData(Staffs model)
+{
+    StaffsVM _viewModel = new StaffsVM();
+
+    _viewModel.MobilePhone = model.MobilePhone != null ? long.Parse(model.MobilePhone) : _viewModel.MobilePhone=null;
+
+    return _viewModel;
+}

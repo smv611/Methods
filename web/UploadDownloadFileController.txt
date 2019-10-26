@@ -1,0 +1,35 @@
+        
+*******	Upload File ***************************************************************************************************
+	[HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "id,Name,Description,FileBinaryData,FileName")] Documents_2 documents_2, HttpPostedFileBase uploadFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadFile != null)
+                {
+                    documents_2.FileBinaryData = new byte[uploadFile.ContentLength];
+                    uploadFile.InputStream.Read(documents_2.FileBinaryData, 0, uploadFile.ContentLength);
+                    documents_2.FileName = uploadFile.FileName;
+                }
+
+                db.Documents_2.Add(documents_2);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(documents_2);
+        }
+
+
+
+
+
+******* Download File ************************************************************************************************
+
+        public FileContentResult GetFile(int? id)
+        {
+            byte[] _contentFile = db.Documents_2.Find(id).FileBinaryData;
+            string _contentType = "application/octet-stream";
+            string _downloadFileName = db.Documents_2.Find(id).FileName;
+            return File(_contentFile, _contentType, _downloadFileName);
+        }

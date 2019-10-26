@@ -1,0 +1,17 @@
+        public ActionResult Index()
+        {
+            var listFromDb = db.EnumTests.ToList();
+            var viewModel = new List<EnumTestVM>();
+            foreach (var item in listFromDb)
+            {
+                viewModel.Add(new EnumTestVM()
+                {
+                    id = item.id,
+                    Floor = item.Floor!=null ? (Floor)Enum.Parse(typeof(Floor), item.Floor) : Floor.NotSet,
+                    Gender = item.Gender!=null ? (Gender)Enum.Parse(typeof(Gender), item.Gender): Gender.NotSet,
+                    Name = item.Name,
+                    NameOfProduct = item.NameOfProduct!=null? (NameOfProduct)Enum.Parse(typeof(NameOfProduct), item.NameOfProduct):NameOfProduct.NotSet
+                });
+            }
+            return View(viewModel);
+        }

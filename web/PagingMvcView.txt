@@ -1,0 +1,62 @@
+@*@model IEnumerable<WebAppPaging.Models.IdentetyTest>*@
+@model PagedList.IPagedList<WebAppPaging.Models.IdentetyTest>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@using PagedList;
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().VnutrTelephone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().MobileTelephone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VnutrTelephone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MobileTelephone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page}))
+
+

@@ -1,0 +1,35 @@
+                #region CheckInputVavues
+                EnumTest enumTest = new EnumTest();
+                if (string.IsNullOrEmpty(enumTestViewModel.Name))
+                {
+                    enumTest.Name = "";
+                }
+                else
+                {
+                    enumTest.Name = enumTestViewModel.Name.ToString();
+                }
+                if (enumTestViewModel.Gender == 0)
+                {
+                    enumTest.Floor = null;
+                }
+                else
+                {
+                    enumTest.Gender = enumTestViewModel.Gender.ToString();
+                }
+                if (enumTestViewModel.Floor == 0)
+                {
+                    enumTest.Floor = null;
+                }
+                else
+                {
+                    enumTest.Floor = enumTestViewModel.Floor.ToString();
+                }
+                if (enumTestViewModel.Unit == 0)
+                {
+                    enumTest.Unit = null;
+                }
+                else
+                {
+                    enumTest.Unit = enumTestViewModel.Unit.ToString();
+                }
+                #endregion // end of MyRegion 

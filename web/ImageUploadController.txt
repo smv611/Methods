@@ -1,0 +1,39 @@
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "id,Name,Age,MobilePhone,Image")] SimpleData simpleData, HttpPostedFileBase uploadImage)
+        {
+            if (ModelState.IsValid)
+            {
+                db.SimpleDatas.Add(simpleData);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            if (ModelState.IsValid && uploadImage != null)
+            {
+                byte[] imageData = null;
+                // считываем переданный файл в массив байтов
+                using (var binaryReader = new BinaryReader(uploadImage.InputStream))
+                {
+                    simpleData.Image = binaryReader.ReadBytes(uploadImage.ContentLength);
+                }
+                // установка массива байтов
+                pic.Image = imageData;
+
+                db.SimpleDatas.Add(pic);
+                db.SaveChanges();
+
+                //return RedirectToAction("Index");
+            }
+            //return View(simpleData);
+            return RedirectToAction("Index");
+        }
+
+
+******************************************************************************************************************************************************
+
+                if (uploadFile != null)
+                {
+                    myNote.BinaryFile = new byte[uploadFile.ContentLength];
+                    uploadFile.InputStream.Read(myNote.BinaryFile, 0, uploadFile.ContentLength);
+                    myNote.FileName = uploadFile.FileName;
+                }

@@ -1,0 +1,16 @@
+        public ActionResult Edit(EnumTestVM enumTestVM)
+        {
+            if (ModelState.IsValid)
+            {
+                EnumTest eTest = new EnumTest();
+                eTest.id = enumTestVM.id;
+                eTest.Name = enumTestVM.Name;
+                eTest.Floor = enumTestVM.Floor.ToString();
+                eTest.Gender = enumTestVM.Gender.ToString();
+                eTest.NameOfProduct = enumTestVM.NameOfProduct.ToString();
+                db.Entry(eTest).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(enumTestVM);
+        }

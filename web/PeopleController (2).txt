@@ -1,0 +1,183 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using WebAppStaffRnch.Models;
+using WebAppStaffRnch.ViewModel;
+using PagedList;
+using PagedList.Mvc;
+
+namespace WebAppStaffRnch.Controllers
+{
+    public class PeopleController : Controller
+    {
+        private staffRnchEntities1 db = new staffRnchEntities1();
+
+        // GET: People
+        public ActionResult Index(string searchString, int? page)
+        {
+            var qData = (from q in db.People select q).OrderBy(s => s.Фамилия).Skip(0);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                qData = qData.Where(s => s.Фамилия.Contains(searchString) || s.Имя.Contains(searchString));
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            List<PersonVM> _listViewModel = new List<PersonVM>();
+            foreach (var item in qData)
+            {
+                _listViewModel.Add(PersonVM.GetViewModel(item));
+            }
+
+            return View(_listViewModel.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: People/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Person person = db.People.Find(id);
+            if (person == null)
+            {
+                return HttpNotFound();
+            }
+            return View(person);
+        }
+
+        // GET: People/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+
+        // POST: People/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(PersonVM _viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Person person = new Person();
+
+                #region CheckForNull
+                //if (string.IsNullOrEmpty(_viewModel.Фамилия))
+                //{
+                //    person.Фамилия = "";
+                //}
+                //else
+                //{
+                //    person.Фамилия = _viewModel.Фамилия.ToString();
+                //}
+
+
+                #endregion // end CheckForNull
+
+                db.People.Add(person);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(_viewModel);
+        }
+
+        // GET: People/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Person person = db.People.Find(id);
+            PersonVM _viewModel = PersonVM.GetViewModel(person);
+            if (person == null)
+            {
+                return HttpNotFound();
+            }
+            return View(_viewModel);
+        }
+
+        // POST: People/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PersonVM _viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Person person = new Person();
+                person.id = _viewModel.id;
+                person.Фамилия = _viewModel.Фамилия;
+                person.Имя = _viewModel.Имя;
+                person.Отчество = _viewModel.Отчество;
+                person.Отдел = _viewModel.Отдел.ToString();
+                person.Должность = _viewModel.Должность.ToString();
+                person.ВнТел = _viewModel.ВнТел;
+                person.Кабинет = _viewModel.Кабинет;
+                person.Городской = _viewModel.Городской;
+                person.Мобильный = _viewModel.Мобильный;
+                person.Email = _viewModel.Email;
+                person.Корпус = _viewModel.Корпус.ToString();
+                person.Этаж = _viewModel.Этаж.ToString();
+                person.Фото = _viewModel.Фото;
+                person.Примечание = _viewModel.Примечание;
+                person.ChangeDataTime = _viewModel.ChangeDataTime;
+                person.CreateDataTime = _viewModel.CreateDataTime;
+
+
+                db.Entry(person).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(_viewModel);
+        }
+
+        // GET: People/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Person person = db.People.Find(id);
+            if (person == null)
+            {
+                return HttpNotFound();
+            }
+            return View(person);
+        }
+
+        // POST: People/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Person person = db.People.Find(id);
+            db.People.Remove(person);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

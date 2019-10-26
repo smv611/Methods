@@ -1,0 +1,23 @@
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            EnumTest enumTest = db.EnumTests.Find(id);
+
+
+            if (enumTest == null)
+            {
+                return HttpNotFound();
+            }
+            var viewModel = EnumTestVM.CreateVM(enumTest);
+            //{
+            //    id = enumTest.id,
+            //    Floor = enumTest.Floor != null ? (Floor)Enum.Parse(typeof(Floor), enumTest.Floor) : Floor.NotSet,
+            //    Gender = enumTest.Gender != null ? (Gender)Enum.Parse(typeof(Gender), enumTest.Gender) : Gender.NotSet,
+            //    Name = enumTest.Name,
+            //    NameOfProduct = enumTest.NameOfProduct != null ? (NameOfProduct)Enum.Parse(typeof(NameOfProduct), enumTest.NameOfProduct) : NameOfProduct.NotSet
+            //};
+            return View(viewModel);
+        }

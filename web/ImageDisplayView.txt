@@ -1,0 +1,25 @@
+@{ byte[] photo = item.Photo;
+             string imageSrc = null;
+             if (photo != null)
+             {
+                 MemoryStream ms = new MemoryStream();
+                 ms.Write(photo, 78, photo.Length - 78);
+                 string imageBase64 = Convert.ToBase64String(ms.ToArray());
+                 imageSrc = string.Format("data:image/jpeg;base64,{0}", imageBase64);
+             }
+            }           
+ 
+            <img src="@imageSrc" alt="Image" />
+
+********************************************************************************************************
+
+
+                 @{ byte[] photo = Model.Image;
+                        string imageSrc = null;
+                        if (photo != null)
+                        {
+                            imageSrc = string.Format("data:image/jpeg;base64,{0}", @Convert.ToBase64String(Model.Image, 0, Model.Image.Length));
+                        }
+                    }
+                    <img src=@imageSrc alt="Image" height="100" width="130" />
+

@@ -1,0 +1,161 @@
+@*@model IEnumerable<WebAppPaging.Models.IdentetyTest>*@
+@*@model PagedList.IPagedList<WebAppStaffRnch.Models.Person>*@
+@model PagedList.IPagedList<WebAppStaffRnch.ViewModel.PersonVM>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@using PagedList;
+@using PagedList.Mvc;
+
+
+@*@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>*@
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+
+@*@model IEnumerable<WebAppStaffRnch.ViewModel.PersonVM>*@
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<p>
+    @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm())
+    {
+    <p>
+        @Html.TextBox("searchString")
+        <input type="submit" value="Search" />
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+    </p>
+    }
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Фамилия)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Имя)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Отчество)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Отдел)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Должность)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ВнТел)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Кабинет)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Городской)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Мобильный)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Корпус)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Этаж)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Фото)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Примечание)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.ChangeDataTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDataTime)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Фамилия)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Имя)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Отчество)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Отдел)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Должность)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ВнТел)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Кабинет)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Городской)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Мобильный)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Корпус)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Этаж)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Фото)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Примечание)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.ChangeDataTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateDataTime)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

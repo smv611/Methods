@@ -1,0 +1,11 @@
+        public ActionResult Index(string searchString)
+        {
+            var qData = from q in db.SimpleDatas select q;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                qData = qData.Where(s => s.Name.Contains(searchString) || s.Age.Contains(searchString));
+            }
+
+            return View(qData);
+        }

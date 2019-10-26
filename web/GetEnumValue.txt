@@ -1,0 +1,16 @@
+        public ActionResult Create([Bind(Include = "id,Name,Gender,Floor,NameOfProduct")] ForEnumTestViewModel forEnumTest)
+        {
+            if (ModelState.IsValid)
+            {
+                ForEnumTest item = new ForEnumTest();
+                item.Name = forEnumTest.Name;
+                item.Gender = forEnumTest.Gender.ToString();
+                item.NameOfProduct = forEnumTest.NameOfProduct.ToString();
+                item.Floor = forEnumTest.Floor.ToString();
+                db.ForEnumTests.Add(item);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(forEnumTest);
+        }

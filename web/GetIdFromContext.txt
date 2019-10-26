@@ -1,0 +1,25 @@
+        public ActionResult Edit([Bind(Include = "id,FotoName,Description,FotoBinaryData")] FotoDima fotoDima, HttpPostedFileBase uploadFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadFile != null)
+                {
+                    fotoDima.FotoBinaryData = new byte[uploadFile.ContentLength];
+                    uploadFile.InputStream.Read(fotoDima.FotoBinaryData, 0, uploadFile.ContentLength);
+                    fotoDima.FotoName = uploadFile.FileName;
+                    db.Entry(fotoDima).State = EntityState.Modified;
+                }
+
+                if (uploadFile == null)
+                {
+                    var data = db.FotoDimas.Where(s => s.id == fotoDima.id).FirstOrDefault();
+                    data.Description = fotoDima.Description;
+                    data.FotoName = fotoDima.FotoName;
+                    db.Entry(data).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(fotoDima);
+        }
