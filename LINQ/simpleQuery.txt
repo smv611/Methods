@@ -1,0 +1,2 @@
+var qData = (from q in db.People select q).OrderBy(s => s.�������).Skip(0);
+qData = qData.Where(s => s.�������.Contains(searchString) || s.���.Contains(searchString));
